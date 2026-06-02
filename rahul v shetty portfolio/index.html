@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Rahul V Shetty</title>
+<link rel="icon" type="image/x-icon" href="./favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
+<meta property="og:title" content="Rahul V Shetty">
+<meta property="og:description" content="My name is Rahul V Shetty, and I keep learning, creating, and doing my part to make the world a little better.">
+<meta property="og:image" content="./og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Rahul V Shetty">
+<meta name="twitter:image" content="./og.jpg">
+<meta name="description" content="My name is Rahul V Shetty, and I keep learning, creating, and doing my part to make the world a little better.">
+<script data-goatcounter="https://rahulvshetty.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; cursor: none; background: #0a0a0a; }
+.mc { font-family: "Press Start 2P", monospace; }
+
+/* Hidden assets */
+.bg {
+  position: fixed; inset: 0;
+  background-image: url("./bg.gif");
+  background-size: cover; background-position: center;
+  z-index: 0; opacity: 0; transition: opacity 1.2s ease;
+}
+.bg.show { opacity: 1; }
+.overlay {
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.65) 100%);
+  z-index: 1; pointer-events: none; opacity: 0; transition: opacity 1.2s ease;
+}
+.overlay.show { opacity: 1; }
+
+/* Screens */
+.screen {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 10; padding: clamp(24px, 5vw, 80px);
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  transition: opacity 0.6s ease;
+  text-align: center;
+}
+.screen::before {
+  content: ''; position: absolute; inset: 0;
+  background: url("./bg.gif") center/cover no-repeat;
+  z-index: -1; opacity: 0.5; filter: blur(10px) brightness(0.75);
+}
+.screen.hidden { opacity: 0; pointer-events: none; }
+.screen > * { position: relative; z-index: 1; }
+
+/* ── ENTRY: name + email ── */
+#entryScreen { gap: clamp(20px, 3.5vh, 36px); }
+.entry-title {
+  font-size: clamp(12px, 1.8vw, 22px);
+  color: #FFD700; text-shadow: 3px 3px 0 #000;
+  text-transform: uppercase; line-height: 1.8;
+}
+.entry-sub {
+  font-size: clamp(7px, 0.9vw, 11px);
+  color: rgba(255,255,255,0.6); text-transform: uppercase;
+  letter-spacing: 0.1em; line-height: 2;
+}
+.entry-form {
+  display: flex; flex-direction: column;
+  gap: clamp(14px, 2vh, 20px); width: min(440px, 90vw); margin-top: 10px;
+}
+.mc-input {
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(8px, 1vw, 11px);
+  color: #fff; background: rgba(255,255,255,0.05);
+  border: 2px solid rgba(255,255,255,0.2);
+  padding: clamp(12px, 1.8vh, 16px);
+  text-align: center; text-transform: uppercase;
+  letter-spacing: 0.05em; cursor: none; outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.mc-input::placeholder { color: rgba(255,255,255,0.3); }
+.mc-input:focus { border-color: #FFD700; background: rgba(255,215,0,0.06); }
+.mc-input.error { border-color: #ff5555; animation: shake 0.4s ease; }
+
+/* ── Authentic Minecraft button ── */
+.mc-btn, .play-btn {
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(8px, 1vw, 12px);
+  color: #fff;
+  text-shadow: 2px 2px 0 #000;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  cursor: none;
+  padding: clamp(14px, 2vh, 20px) clamp(20px, 3vw, 32px);
+  border: 2px solid #000;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.18) 100%),
+    #7a7a7a;
+  box-shadow:
+    inset 2px 2px 0 rgba(255,255,255,0.25),
+    inset -2px -2px 0 rgba(0,0,0,0.35),
+    0 4px 0 #2b2b2b;
+  image-rendering: pixelated;
+  transition: background 0.1s, box-shadow 0.08s, transform 0.08s;
+  position: relative;
+}
+.mc-btn:hover, .play-btn:hover {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.15) 100%),
+    #8b9a6b;
+  color: #fff;
+  text-shadow: 2px 2px 0 #000, 0 0 8px rgba(168,224,99,0.5);
+}
+.mc-btn:active, .play-btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 2px 2px 0 rgba(255,255,255,0.2),
+    inset -2px -2px 0 rgba(0,0,0,0.35),
+    0 1px 0 #2b2b2b;
+}
+
+/* ── LOADING ── */
+#loadingScreen { gap: clamp(20px, 3vh, 36px); }
+.loading-greet {
+  font-size: clamp(11px, 1.6vw, 20px);
+  color: #FFD700; text-shadow: 3px 3px 0 #000;
+  text-transform: uppercase; line-height: 2; max-width: min(640px, 90vw);
+  min-height: 2em;
+}
+.loading-quip {
+  font-size: clamp(7px, 0.9vw, 11px);
+  color: rgba(255,255,255,0.65); text-transform: uppercase;
+  letter-spacing: 0.05em; line-height: 2; max-width: min(560px, 88vw);
+  min-height: 2em;
+}
+.mc-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 6px; }
+.mc-bar-outer {
+  width: min(400px, 80vw); height: 16px;
+  background: #1a1a1a; border: 3px solid #555; overflow: hidden; position: relative;
+}
+.mc-bar-inner {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, #7EC850, #a8e063);
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.4); transition: width 0.2s ease;
+}
+.mc-bar-pct { font-size: clamp(6px, 0.7vw, 8px); color: rgba(255,255,255,0.4); letter-spacing: 0.1em; }
+.loading-tagline {
+  font-size: clamp(8px, 1vw, 13px); color: #fff;
+  text-transform: uppercase; letter-spacing: 0.15em;
+  text-shadow: 2px 2px 0 #000; margin-top: 4px;
+}
+
+/* ── MAIN / PERSONAL SITE ── */
+#mainScreen {
+  background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none;
+  z-index: 5; gap: clamp(10px, 2vh, 20px);
+}
+#mainScreen::before { display: none; }
+.line-small {
+  font-size: clamp(10px, 1.75vw, 26px);
+  color: rgba(255,255,255,0.88); text-shadow: 2px 2px 0 #000;
+  line-height: 1.8; min-height: 1.8em; text-transform: uppercase;
+}
+.name-link {
+  font-size: clamp(16px, 3.5vw, 52px);
+  color: #FFD700; text-decoration: none;
+  text-shadow: 4px 4px 0 #000, 3px 3px 0 #000;
+  transition: color 0.15s; cursor: none; display: block; text-align: center;
+}
+.name-link:hover { color: #fff9c4; }
+.name-link {
+  -webkit-user-select: none; user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+.mc-cursor {
+  display: inline-block; width: 0.55em; height: 0.9em;
+  background: #fff; vertical-align: middle; margin-left: 2px;
+  animation: mcblink 0.7s step-end infinite;
+}
+.mc-cursor.gold { background: #FFD700; }
+@keyframes mcblink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.hint {
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(5px, 0.6vw, 8px);
+  color: rgba(255,255,255,0.72); text-shadow: 1px 1px 0 #000;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  margin-top: clamp(8px, 1.5vh, 16px);
+  animation: hintPulse 2.5s ease-in-out infinite;
+}
+@keyframes hintPulse { 0%,100%{opacity:0.6} 50%{opacity:1} }
+@keyframes thoughtBlink { 0%,60%{opacity:1} 61%,100%{opacity:0.15} }
+@keyframes villagerBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+/* WANT TO PLAY button — positioning only, style inherited from .play-btn above */
+.play-btn { margin-top: clamp(12px, 2.5vh, 24px); opacity: 0; }
+.play-btn.show { opacity: 1; }
+.play-teaser {
+  font-size: clamp(5px, 0.62vw, 8px);
+  color: rgba(255,215,0,0.6); text-transform: uppercase; letter-spacing: 0.1em;
+  text-shadow: 1px 1px 0 #000; margin-top: clamp(8px, 1.5vh, 14px);
+  opacity: 0; transition: opacity 0.6s ease;
+}
+.play-teaser.show { opacity: 0.7; }
+
+/* ── DOOR TRANSITION ── */
+#doorScreen {
+  background: #000; z-index: 50;
+  display: flex; align-items: center; justify-content: center;
+}
+#doorScreen::before { display: none; }
+/* CSS Minecraft door placeholder — swap with image later */
+.mc-door {
+  width: clamp(120px, 20vw, 200px);
+  height: clamp(220px, 38vw, 360px);
+  position: relative;
+  background: linear-gradient(180deg, #8b5a2b 0%, #6b4423 100%);
+  border: 6px solid #4a2f18;
+  box-shadow: 0 0 40px rgba(0,0,0,0.8);
+}
+.mc-door::before {
+  content: ''; position: absolute; inset: 12px;
+  background:
+    repeating-linear-gradient(90deg, transparent, transparent 18px, rgba(0,0,0,0.2) 18px, rgba(0,0,0,0.2) 20px),
+    linear-gradient(180deg, #7a4d24, #5a3a1d);
+  border: 3px solid #3a2512;
+}
+.mc-door::after {
+  content: ''; position: absolute;
+  right: 16px; top: 45%;
+  width: 14px; height: 14px;
+  background: #2a2a2a; border-radius: 2px;
+  box-shadow: 0 0 0 3px #1a1a1a;
+}
+.door-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
+  animation: doorOpen 1.4s cubic-bezier(0.7,0,0.3,1) forwards;
+}
+@keyframes doorOpen {
+  0%   { transform: scale(1) rotateY(0deg); opacity: 1; }
+  40%  { transform: scale(1.05) rotateY(0deg); }
+  100% { transform: scale(3) rotateY(75deg); opacity: 0; }
+}
+.door-label {
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(8px, 1vw, 12px); color: #FFD700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  text-shadow: 2px 2px 0 #000;
+  animation: labelFade 1.4s ease forwards;
+}
+@keyframes labelFade { 0%{opacity:1} 60%{opacity:1} 100%{opacity:0} }
+
+/* ── QUIZ ── */
+#quizScreen {
+  gap: clamp(24px, 4vh, 48px);
+  background: transparent;
+  backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+  z-index: 10;
+}
+#quizScreen::before { display: none; }
+.intro-label {
+  font-size: clamp(6px, 0.7vw, 9px); color: rgba(255,255,255,0.3);
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+.question-text {
+  font-size: clamp(10px, 1.6vw, 20px); color: #fff;
+  text-shadow: 3px 3px 0 #000; line-height: 2;
+  max-width: min(700px, 90vw); min-height: 4em; text-transform: uppercase; opacity: 0;
+}
+.question-text.visible { opacity: 1; }
+.options {
+  display: flex; flex-direction: column; gap: clamp(10px, 1.5vh, 16px);
+  width: min(560px, 90vw); opacity: 0; transform: translateY(10px);
+  transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+}
+.options.visible { opacity: 1; transform: none; }
+.opt-btn {
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(7px, 0.85vw, 11px); color: #fff;
+  background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.15);
+  padding: clamp(10px, 1.5vh, 16px) clamp(16px, 2vw, 24px);
+  text-align: left; cursor: none; text-transform: uppercase;
+  letter-spacing: 0.06em; line-height: 1.8;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+  position: relative; overflow: hidden;
+}
+.opt-btn::before {
+  content: '▶'; position: absolute; left: -20px; top: 50%;
+  transform: translateY(-50%); color: #FFD700; font-size: 0.8em; transition: left 0.2s;
+}
+.opt-btn:hover { background: rgba(255,215,0,0.08); border-color: #FFD700; color: #FFD700; transform: translateX(6px); }
+.opt-btn:hover::before { left: 12px; }
+.opt-btn.selected { background: rgba(255,215,0,0.15); border-color: #FFD700; color: #FFD700; }
+.progress { display: flex; gap: 10px; }
+.prog-dot { width: 8px; height: 8px; border: 2px solid rgba(255,255,255,0.2); }
+.prog-dot.active { background: #FFD700; border-color: #FFD700; }
+.prog-dot.done { background: rgba(255,215,0,0.4); border-color: rgba(255,215,0,0.4); }
+
+/* ── COUPON ── */
+#couponScreen {
+  gap: clamp(18px, 3vh, 32px);
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+  z-index: 11;
+}
+#couponScreen::before { display: none; }
+.coupon-congrats {
+  font-size: clamp(11px, 1.6vw, 20px); color: #FFD700;
+  text-shadow: 3px 3px 0 #000; text-transform: uppercase; line-height: 2;
+  opacity: 0; animation: popIn 0.6s cubic-bezier(0.2,1.5,0.4,1) 0.2s forwards;
+}
+.coupon-card {
+  background: linear-gradient(135deg, rgba(255,215,0,0.12), rgba(255,215,0,0.04));
+  border: 3px dashed #FFD700; padding: clamp(24px, 4vw, 40px) clamp(28px, 5vw, 56px);
+  display: flex; flex-direction: column; align-items: center; gap: clamp(12px, 2vh, 20px);
+  opacity: 0; transform: scale(0.8);
+  animation: couponPop 0.7s cubic-bezier(0.2,1.5,0.4,1) 0.5s forwards;
+  position: relative; box-shadow: 0 0 50px rgba(255,215,0,0.15);
+}
+.coupon-off {
+  font-size: clamp(28px, 6vw, 64px); color: #FFD700;
+  text-shadow: 4px 4px 0 #000; line-height: 1;
+}
+.coupon-label { font-size: clamp(7px, 0.9vw, 11px); color: #fff; text-transform: uppercase; letter-spacing: 0.1em; }
+.coupon-code {
+  font-size: clamp(11px, 1.6vw, 20px); color: #0a0a0a; background: #FFD700;
+  padding: clamp(10px, 1.5vh, 14px) clamp(16px, 2.5vw, 24px);
+  letter-spacing: 0.15em; box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+}
+.coupon-tnc {
+  font-size: clamp(5px, 0.62vw, 8px); color: rgba(255,255,255,0.5);
+  text-transform: uppercase; letter-spacing: 0.08em; line-height: 2;
+  max-width: min(440px, 88vw); margin-top: 4px;
+  opacity: 0; animation: fadeIn 0.6s ease 1.1s forwards;
+}
+.coupon-screenshot {
+  font-size: clamp(7px, 0.9vw, 11px); color: #FFD700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  opacity: 0; animation: fadeIn 0.6s ease 1.3s forwards;
+}
+.coupon-continue {
+  opacity: 0; animation: fadeIn 0.6s ease 1.6s forwards; margin-top: 8px;
+}
+@keyframes couponPop { to { opacity: 1; transform: scale(1); } }
+@keyframes popIn { to { opacity: 1; } }
+
+/* Confetti canvas */
+#confettiCanvas { position: fixed; inset: 0; z-index: 49; pointer-events: none; }
+
+/* XP bar */
+.xp-wrap {
+  position: fixed; bottom: clamp(14px,3vh,26px); left: 50%;
+  transform: translateX(-50%); z-index: 6;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  opacity: 0; transition: opacity 0.8s ease;
+}
+.xp-wrap.show { opacity: 1; }
+.xp-label { font-size: clamp(5px, 0.6vw, 8px); color: rgba(255,255,255,0.38); text-shadow: 1px 1px 0 #000; text-transform: uppercase; letter-spacing: 0.1em; }
+.xp-bar-outer { width: clamp(120px,14vw,190px); height: 7px; background: #111; border: 2px solid #444; overflow: hidden; }
+.xp-bar-inner { height: 100%; width: 0; background: #7EC850; box-shadow: inset 0 -2px 0 rgba(0,0,0,0.4); transition: width 2s cubic-bezier(.16,1,.3,1); }
+
+/* Explosion canvas */
+#explodeCanvas { position: fixed; inset: 0; z-index: 40; pointer-events: none; opacity: 0; }
+
+/* Music button */
+#musicBtn {
+  position: fixed; top: clamp(16px, 3vh, 28px); right: clamp(16px, 3vw, 36px);
+  z-index: 9990; background: rgba(0,0,0,0.55);
+  border: 2px solid rgba(255,215,0,0.4);
+  width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+  cursor: none; transition: border-color 0.2s, background 0.2s; font-size: 0;
+}
+#musicBtn:hover { border-color: #FFD700; background: rgba(255,215,0,0.1); }
+#musicBtn.playing::after {
+  content: ''; position: absolute; inset: -6px;
+  border: 1px solid rgba(255,215,0,0.3); animation: musicPulse 2s ease-in-out infinite;
+}
+@keyframes musicPulse { 0%,100%{opacity:0.3; transform:scale(1)} 50%{opacity:0.8; transform:scale(1.08)} }
+
+/* Pixel cursor */
+#cur {
+  position: fixed; width: 12px; height: 12px; background: #FFD700;
+  pointer-events: none; z-index: 9999; transform: translate(-2px,-2px);
+  box-shadow: 2px 2px 0 #000; transition: transform 0.08s, background 0.1s;
+}
+#cur.hover { background: #fff9c4; transform: translate(-2px,-2px) scale(1.4); }
+
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes shake {
+  0%,100%{transform:translate(0,0) rotate(0)}
+  20%{transform:translate(-4px,-2px) rotate(-2deg)}
+  40%{transform:translate(4px,2px) rotate(2deg)}
+  60%{transform:translate(-4px,2px) rotate(-1deg)}
+  80%{transform:translate(4px,-2px) rotate(1deg)}
+}
+
+@media (max-width: 600px) {
+  body { cursor: auto; }
+  #cur { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg" id="bg"></div>
+<div class="overlay" id="bgOverlay"></div>
+<!-- Door video background (plays during quiz) -->
+<video id="doorVideo" muted playsinline loop preload="auto" style="position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;opacity:0;transition:opacity 0.8s ease;filter:blur(0px)">
+  <source src="./door.mp4" type="video/mp4">
+</video>
+<div id="videoGlow" style="position:fixed;inset:0;z-index:3;pointer-events:none;opacity:0;transition:opacity 0.8s ease;background:radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.25) 100%);box-shadow:inset 0 0 120px rgba(255,200,100,0.3)"></div>
+<canvas id="explodeCanvas"></canvas>
+<canvas id="confettiCanvas"></canvas>
+<div id="cur"></div>
+
+<audio id="bgAudio" loop preload="auto"><source src="./music.mp3" type="audio/mpeg"></audio>
+
+<button id="musicBtn">
+  <svg id="iconOn" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 16 16" shape-rendering="crispEdges" fill="#FFD700">
+    <rect x="1" y="6" width="3" height="4"/><rect x="4" y="5" width="1" height="6"/><rect x="5" y="4" width="1" height="8"/><rect x="6" y="3" width="1" height="10"/>
+    <rect x="9" y="5" width="1" height="1"/><rect x="10" y="6" width="1" height="4"/><rect x="9" y="10" width="1" height="1"/>
+    <rect x="11" y="4" width="1" height="1"/><rect x="12" y="5" width="1" height="6"/><rect x="11" y="11" width="1" height="1"/>
+  </svg>
+  <svg id="iconOff" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 16 16" shape-rendering="crispEdges" fill="#FFD700" style="display:none">
+    <rect x="1" y="6" width="3" height="4"/><rect x="4" y="5" width="1" height="6"/><rect x="5" y="4" width="1" height="8"/><rect x="6" y="3" width="1" height="10"/>
+    <rect x="9" y="6" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="10" y="9" width="1" height="1"/><rect x="9" y="10" width="1" height="1"/>
+    <rect x="13" y="6" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="12" y="9" width="1" height="1"/><rect x="13" y="10" width="1" height="1"/>
+  </svg>
+</button>
+
+<!-- Sound prompt — thought-bubble pointing at speaker, blinks until form filled -->
+<div id="soundPrompt" style="position:fixed;top:calc(clamp(16px,3vh,28px) + 54px);right:clamp(16px,3vw,36px);z-index:9991;pointer-events:none;animation:thoughtBlink 1.1s step-end infinite">
+  <!-- little bubbles leading up to speaker -->
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;margin-bottom:5px;padding-right:14px">
+    <div style="width:9px;height:9px;background:rgba(0,0,0,0.5);border:2px solid #FFD700"></div>
+    <div style="width:6px;height:6px;background:rgba(0,0,0,0.5);border:2px solid #FFD700;margin-right:-4px"></div>
+  </div>
+  <!-- main thought bubble (hollow) -->
+  <div class="mc" style="background:rgba(0,0,0,0.55);color:#FFD700;border:2px solid #FFD700;padding:8px 12px;font-size:clamp(5px,0.62vw,8px);text-transform:uppercase;letter-spacing:0.06em;box-shadow:2px 2px 0 rgba(0,0,0,0.4);white-space:nowrap;line-height:1.6;text-align:center;text-shadow:1px 1px 0 #000">PSST...<br>TURN ON SOUND 🔊</div>
+</div>
+
+<!-- ── SCREEN 1: ENTRY (name + email) ── -->
+<div class="screen" id="entryScreen">
+  <div class="mc entry-title">WELCOME, TRAVELLER</div>
+  <div class="mc entry-sub">Before you enter — who goes there?</div>
+  <div class="entry-form">
+    <input class="mc-input" id="nameInput" type="text" placeholder="YOUR NAME" maxlength="24" autocomplete="off">
+    <input class="mc-input" id="emailInput" type="email" placeholder="YOUR EMAIL" maxlength="60" autocomplete="off">
+    <button class="mc-btn" id="enterBtn">▶ ENTER</button>
+    <div class="mc" id="entryError" style="font-size:clamp(5px,0.65vw,8px);color:#ff6b6b;text-transform:uppercase;letter-spacing:0.08em;line-height:1.8;min-height:1.2em;opacity:0;transition:opacity 0.2s">&nbsp;</div>
+  </div>
+</div>
+
+<!-- ── SCREEN 2: LOADING ── -->
+<div class="screen hidden" id="loadingScreen">
+  <div class="mc loading-greet" id="loadingGreet"></div>
+  <div class="mc loading-quip" id="loadingQuip"></div>
+  <div class="mc-bar-wrap">
+    <div class="mc-bar-outer"><div class="mc-bar-inner" id="mcBar"></div></div>
+    <div class="mc-bar-pct" id="mcPct">0%</div>
+  </div>
+  <div class="mc loading-tagline">GREAT THINGS TAKE TIME.</div>
+</div>
+
+<!-- ── SCREEN 3: MAIN / PERSONAL SITE ── -->
+<div class="screen hidden" id="mainScreen">
+  <div class="mc line-small" id="line1"><span class="mc-cursor" id="cur1"></span></div>
+  <a class="mc name-link" id="nameLink" href="https://www.linkedin.com/in/rahulvshetty2002/" target="_blank" rel="noopener" style="opacity:0"></a>
+  <div class="mc line-small" id="line3" style="max-width:min(780px,88vw);text-align:center"><span class="mc-cursor gold" id="cur3" style="display:none"></span></div>
+  <button class="mc play-btn" id="playBtn">▶ WANT TO PLAY?</button>
+  <div class="mc play-teaser" id="playTeaser">🎁 THERE'S A REWARD WAITING AT THE END</div>
+</div>
+
+<!-- ── VILLAGER CONTACT ── -->
+<div id="villager" title="" style="position:fixed;bottom:clamp(70px,12vh,110px);right:clamp(20px,4vw,48px);z-index:7;cursor:none;display:none;flex-direction:column;align-items:center;gap:6px;animation:villagerBob 2.5s ease-in-out infinite">
+  <!-- pixel villager -->
+  <svg width="56" height="72" viewBox="0 0 14 18" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+    <!-- head -->
+    <rect x="3" y="0" width="8" height="6" fill="#9b7653"/>
+    <!-- brow -->
+    <rect x="3" y="2" width="8" height="1" fill="#7a5c3e"/>
+    <!-- unibrow -->
+    <rect x="4" y="3" width="6" height="1" fill="#6b4f35"/>
+    <!-- eyes -->
+    <rect x="4" y="4" width="2" height="2" fill="#fff"/>
+    <rect x="8" y="4" width="2" height="2" fill="#fff"/>
+    <rect x="5" y="4" width="1" height="2" fill="#5b3fa0"/>
+    <rect x="8" y="4" width="1" height="2" fill="#5b3fa0"/>
+    <!-- big nose -->
+    <rect x="6" y="3" width="2" height="4" fill="#8a6849"/>
+    <!-- robe body -->
+    <rect x="2" y="6" width="10" height="9" fill="#6b4226"/>
+    <!-- robe front trim -->
+    <rect x="6" y="6" width="2" height="9" fill="#caa34a"/>
+    <!-- arms crossed -->
+    <rect x="2" y="9" width="10" height="3" fill="#5a371f"/>
+    <!-- legs -->
+    <rect x="3" y="15" width="3" height="3" fill="#4a2f1a"/>
+    <rect x="8" y="15" width="3" height="3" fill="#4a2f1a"/>
+  </svg>
+  <div class="mc" style="font-size:clamp(4px,0.55vw,7px);color:#FFD700;text-shadow:1px 1px 0 #000;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap">▲ TALK TO ME</div>
+</div>
+
+<!-- ── CONTACT MODAL ── -->
+<div id="contactModal" style="position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:clamp(20px,4vw,60px);background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)">
+  <div style="background:#1a1a1a;border:3px solid #FFD700;max-width:min(420px,90vw);padding:clamp(28px,4vw,44px);box-shadow:0 0 50px rgba(255,215,0,0.2);display:flex;flex-direction:column;align-items:center;gap:clamp(18px,3vh,28px);text-align:center">
+    <div class="mc" style="font-size:clamp(11px,1.5vw,18px);color:#FFD700;text-shadow:2px 2px 0 #000;text-transform:uppercase;line-height:1.8">WANT TO REACH RAHUL?</div>
+    <a class="mc-btn" id="contactLinkedin" style="width:100%;text-decoration:none;text-align:center" href="https://www.linkedin.com/in/rahulvshetty2002/" target="_blank" rel="noopener">▶ LINKEDIN</a>
+    <a class="mc-btn" id="contactEmail" style="width:100%;text-decoration:none;text-align:center" href="mailto:rahulbuildsrealshit@gmail.com">▶ EMAIL</a>
+    <div class="mc" id="contactClose" style="font-size:clamp(5px,0.65vw,8px);color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em;cursor:none;margin-top:4px">✕ CLOSE</div>
+  </div>
+</div>
+
+
+<!-- ── SCREEN 4: QUIZ ── -->
+<div class="screen hidden" id="quizScreen">
+  <div class="mc intro-label" id="quizLabel">Rahul V Shetty · The Game</div>
+  <div class="mc question-text" id="questionText"></div>
+  <div class="options" id="optionsWrap"></div>
+  <div class="progress" id="progressDots"></div>
+</div>
+
+<!-- ── SCREEN 5: COUPON ── -->
+<div class="screen hidden" id="couponScreen">
+  <div class="mc coupon-congrats" id="couponCongrats">YOU MADE IT TO THE END!</div>
+  <div class="coupon-card">
+    <div class="mc coupon-off">10% OFF</div>
+    <div class="mc coupon-label">At any Cave Mens Salon</div>
+    <div class="mc coupon-code" id="couponCode">CAVE-XXXX-XXXX</div>
+  </div>
+  <div class="mc coupon-screenshot">📸 SCREENSHOT THIS TO REDEEM</div>
+  <div class="mc coupon-tnc">FIRST-TIME CUSTOMERS ONLY · VALID AT ALL 3 BRANCHES · <span id="tncLink" style="color:#FFD700;text-decoration:underline;cursor:none">TERMS & CONDITIONS APPLY ▸</span></div>
+  <button class="mc play-btn show coupon-continue" id="couponContinue">▶ CONTINUE</button>
+</div>
+
+
+<!-- ── T&C MODAL ── -->
+<div id="tncModal" style="position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:clamp(20px,4vw,60px);background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)">
+  <div style="background:#1a1a1a;border:3px solid #FFD700;max-width:min(560px,92vw);max-height:85vh;overflow-y:auto;padding:clamp(24px,4vw,40px);box-shadow:0 0 50px rgba(255,215,0,0.2)">
+    <div class="mc" style="font-size:clamp(11px,1.5vw,18px);color:#FFD700;text-shadow:2px 2px 0 #000;text-transform:uppercase;margin-bottom:24px;text-align:center">Terms & Conditions</div>
+    <div class="mc" id="tncBody" style="font-size:clamp(7px,0.85vw,10px);color:rgba(255,255,255,0.8);text-transform:uppercase;letter-spacing:0.04em;line-height:2.4"></div>
+    <button class="mc-btn" id="tncClose" style="margin-top:28px;width:100%">▶ GOT IT</button>
+  </div>
+</div>
+
+<!-- XP bar -->
+<div class="xp-wrap" id="xpWrap">
+  <div class="mc xp-label">Level 24 · Always Building</div>
+  <div class="xp-bar-outer"><div class="xp-bar-inner" id="xpBar"></div></div>
+</div>
+
+<script>
+/* ════════════════ SUPABASE ════════════════ */
+const _supabase = supabase.createClient(
+  'https://nrmgsgntcopoyfphvjbm.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybWdzZ250Y29wb3lmcGh2amJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNjk1MTIsImV4cCI6MjA5NDc0NTUxMn0.1GOOUh4fbwUOZeosGriiuowWubHA0UqxjEilNUecGu0'
+);
+const _data = { name:'', email:'', q1:null, q2:null, q3:null, q4:null, q5:null, coupon:'', device: navigator.userAgent };
+
+function gc(path, title) { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path, title }); }
+
+let _rowId = null;
+
+// Save name + email immediately on entry (every visitor captured)
+async function saveEntry() {
+  try {
+    const { data, error } = await _supabase.from('site_responses').insert({
+      name: _data.name, email: _data.email, device: _data.device
+    }).select('id').single();
+    if (!error && data) _rowId = data.id;
+  } catch(e) { console.log('Supabase entry save failed:', e); }
+}
+
+// Update the same row with quiz answers + coupon (only if they played)
+async function saveToSupabase() {
+  try {
+    if (_rowId) {
+      await _supabase.from('site_responses').update({
+        question_1: _data.q1, question_2: _data.q2, question_3: _data.q3,
+        question_4: _data.q4, question_5: _data.q5,
+        coupon_code: _data.coupon
+      }).eq('id', _rowId);
+    } else {
+      // Fallback: insert fresh if entry save failed
+      await _supabase.from('site_responses').insert({
+        name: _data.name, email: _data.email,
+        question_1: _data.q1, question_2: _data.q2, question_3: _data.q3,
+        question_4: _data.q4, question_5: _data.q5,
+        coupon_code: _data.coupon, device: _data.device
+      });
+    }
+  } catch(e) { console.log('Supabase update failed:', e); }
+}
+
+/* ════════════════ CURSOR ════════════════ */
+const cur = document.getElementById('cur');
+document.addEventListener('mousemove', e => { cur.style.left = e.clientX+'px'; cur.style.top = e.clientY+'px'; }, {passive:true});
+
+
+/* ════════════════ SOUND FX (Web Audio) ════════════════ */
+let _audioCtx = null;
+function _ac(){ if(!_audioCtx){ try{ _audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return _audioCtx; }
+
+// Minecraft-style wooden button click
+function playClick(){
+  const ac = _ac(); if(!ac) return;
+  if (ac.state === 'suspended') ac.resume();
+  const t = ac.currentTime;
+  // Short percussive "wood tap" — two quick tones
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
+  osc.type = 'square';
+  osc.frequency.setValueAtTime(620, t);
+  osc.frequency.exponentialRampToValueAtTime(220, t + 0.06);
+  gain.gain.setValueAtTime(0.0001, t);
+  gain.gain.exponentialRampToValueAtTime(0.18, t + 0.005);
+  gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+  osc.connect(gain); gain.connect(ac.destination);
+  osc.start(t); osc.stop(t + 0.1);
+  // tiny noise click layer for "wood" texture
+  const buf = ac.createBuffer(1, ac.sampleRate*0.03, ac.sampleRate);
+  const d = buf.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/d.length, 3);
+  const noise = ac.createBufferSource(); noise.buffer = buf;
+  const ng = ac.createGain(); ng.gain.setValueAtTime(0.08, t);
+  noise.connect(ng); ng.connect(ac.destination); noise.start(t);
+}
+
+// Soft typewriter blip + haptic vibrate (only when user types)
+function playType(){
+  const ac = _ac(); if(!ac) return;
+  if (ac.state === 'suspended') ac.resume();
+  const t = ac.currentTime;
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
+  osc.type = 'square';
+  osc.frequency.setValueAtTime(1200 + Math.random()*300, t);
+  gain.gain.setValueAtTime(0.0001, t);
+  gain.gain.exponentialRampToValueAtTime(0.05, t + 0.002);
+  gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.03);
+  osc.connect(gain); gain.connect(ac.destination);
+  osc.start(t); osc.stop(t + 0.035);
+  // Haptic feedback on devices that support it
+  if (navigator.vibrate) navigator.vibrate(8);
+}
+
+// Attach click sound to all buttons + interactive elements
+document.addEventListener('click', (e) => {
+  if (e.target.closest('button, .opt-btn, #villager, #musicBtn, .mc-btn, .play-btn, #nameLink, #tncLink, #contactClose, #contactLinkedin, #contactEmail')) {
+    playClick();
+  }
+}, { passive: true, capture: true });
+
+
+/* ════════════════ MUSIC ════════════════ */
+const bgAudio = document.getElementById('bgAudio');
+const musicBtn = document.getElementById('musicBtn');
+const iconOn = document.getElementById('iconOn');
+const iconOff = document.getElementById('iconOff');
+let isMuted = true, musicStarted = false;   // OFF by default
+let _wasPlayingBeforeHide = false;
+bgAudio.volume = 0.4; bgAudio.loop = true;
+// Start with OFF icon shown
+iconOn.style.display='none'; iconOff.style.display='block';
+
+function setIcon(on){ iconOn.style.display=on?'block':'none'; iconOff.style.display=on?'none':'block'; on?musicBtn.classList.add('playing'):musicBtn.classList.remove('playing'); }
+
+const soundPrompt = document.getElementById('soundPrompt');
+let promptActive = true;
+
+window._startMusic = function(){
+  if(musicStarted) return;
+  musicStarted=true; isMuted=false; bgAudio.muted=false;
+  bgAudio.play().then(()=>setIcon(true)).catch(e=>console.log('play failed',e));
+  // hide prompt
+  if (soundPrompt) { soundPrompt.style.opacity='0'; setTimeout(()=>soundPrompt.style.display='none',500); }
+  promptActive = false;
+  if (typeof _promptReminder !== 'undefined') clearInterval(_promptReminder);
+};
+
+// Music starts ONLY via the speaker icon or the thought-bubble prompt — NOT random clicks.
+if (soundPrompt) {
+  soundPrompt.style.pointerEvents = 'auto';
+  soundPrompt.style.cursor = 'none';
+  soundPrompt.addEventListener('click', (e) => { e.stopPropagation(); window._startMusic(); });
+}
+
+// Prompt stays blinking until music starts or they enter.
+// Re-grab attention every 20s if still not turned on.
+const _promptReminder = setInterval(() => {
+  if (musicStarted || !soundPrompt || soundPrompt.style.display === 'none') { clearInterval(_promptReminder); return; }
+  // bounce: briefly hide then pop back to re-catch the eye
+  soundPrompt.style.transition = 'transform 0.25s ease, opacity 0.25s ease';
+  soundPrompt.style.transform = 'scale(1.25)';
+  soundPrompt.style.opacity = '1';
+  setTimeout(() => { soundPrompt.style.transform = 'scale(1)'; }, 280);
+}, 20000);
+
+// Music button — manual toggle anytime
+musicBtn.addEventListener('click', e=>{
+  e.stopPropagation();
+  if(!musicStarted){ window._startMusic(); return; }
+  // If audio is paused (e.g. came back from another tab) — force resume + unmute
+  if (bgAudio.paused) {
+    isMuted = false;
+    bgAudio.muted = false;
+    bgAudio.play().then(()=>setIcon(true)).catch(()=>{});
+    _wasPlayingBeforeHide = true;
+    return;
+  }
+  // Otherwise normal mute/unmute toggle
+  isMuted = !isMuted;
+  bgAudio.muted = isMuted;
+  if (!isMuted && bgAudio.paused) bgAudio.play().catch(()=>{});
+  setIcon(!isMuted);
+});
+
+// Pause music when user leaves the tab/site; resume when they return (only if it was on)
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    _wasPlayingBeforeHide = (musicStarted && !isMuted && !bgAudio.paused);
+    bgAudio.pause();
+  } else {
+    if (musicStarted && !isMuted) {
+      bgAudio.muted = false;
+      const p = bgAudio.play();
+      if (p) p.then(()=>setIcon(true)).catch(()=>{ /* needs a click — icon shows off */ setIcon(false); });
+    }
+  }
+});
+
+// Also pause on window blur (e.g. switching apps), resume on focus
+window.addEventListener('blur', () => {
+  if (musicStarted && !isMuted && !bgAudio.paused) { _wasPlayingBeforeHide = true; bgAudio.pause(); }
+});
+window.addEventListener('focus', () => {
+  if (_wasPlayingBeforeHide && musicStarted && !isMuted) { bgAudio.play().catch(()=>{}); }
+});
+
+
+/* ════════════════ SCREEN HELPERS ════════════════ */
+function show(id){ document.getElementById(id).classList.remove('hidden'); }
+function hide(id){ document.getElementById(id).classList.add('hidden'); }
+
+/* ════════════════ 1. ENTRY ════════════════ */
+const nameInput = document.getElementById('nameInput');
+const emailInput = document.getElementById('emailInput');
+const enterBtn = document.getElementById('enterBtn');
+
+function validName(n){
+  n = n.trim();
+  // 2-24 chars, letters + spaces + . - ' only (covers names like O'Brien, Jean-Paul, Dr. X)
+  if (n.length < 2 || n.length > 24) return false;
+  // Must contain at least 2 letters
+  const letters = (n.match(/[a-zA-Z]/g) || []).length;
+  if (letters < 2) return false;
+  // Only allow letters, spaces, apostrophes, hyphens, periods
+  if (!/^[a-zA-Z][a-zA-Z\s.'-]*$/.test(n)) return false;
+  // No numbers
+  if (/[0-9]/.test(n)) return false;
+  // Reject obvious junk: same char repeated 4+ times (aaaa, xxxx)
+  if (/(.)\1{3,}/.test(n.toLowerCase())) return false;
+  // Reject common junk words
+  const junk = ['asdf','qwer','test','aaaa','xxxx','abcd','none','null','na','xyz','blah'];
+  if (junk.includes(n.toLowerCase().replace(/[\s.'-]/g,''))) return false;
+  return true;
+}
+
+function validEmail(e){
+  e = e.trim().toLowerCase();
+  // Must match basic email shape
+  if (!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(e)) return false;
+  if (e.includes('..')) return false;
+  const local  = e.split('@')[0];
+  const domain = e.split('@')[1];
+  if (local.length < 2) return false;
+  // STRICT: only these trusted providers allowed
+  const allowed = [
+    'gmail.com','googlemail.com',
+    'yahoo.com','yahoo.in','yahoo.co.in','ymail.com',
+    'outlook.com','hotmail.com','live.com','live.in','msn.com',
+    'icloud.com','me.com',
+    'protonmail.com','proton.me',
+    'rediffmail.com','zoho.com','zohomail.in','aol.com'
+  ];
+  return allowed.includes(domain);
+}
+
+const entryError = document.getElementById('entryError');
+function showEntryError(msg){ entryError.textContent = msg; entryError.style.opacity = '1'; }
+function clearEntryError(){ entryError.style.opacity = '0'; }
+
+enterBtn.addEventListener('click', () => {
+  const name = nameInput.value.trim();
+  const email = emailInput.value.trim();
+  clearEntryError();
+
+  if (!validName(name)) {
+    nameInput.classList.add('error'); setTimeout(()=>nameInput.classList.remove('error'),500);
+    showEntryError('Please enter a real name (letters only)');
+    return;
+  }
+  if (!email) {
+    emailInput.classList.add('error'); setTimeout(()=>emailInput.classList.remove('error'),500);
+    showEntryError('Please enter your email');
+    return;
+  }
+  if (!validEmail(email)) {
+    emailInput.classList.add('error'); setTimeout(()=>emailInput.classList.remove('error'),500);
+    showEntryError('Use a real email (gmail, yahoo, outlook...)');
+    return;
+  }
+  _data.name = name; _data.email = email;
+  gc('/entered', 'Entered name+email');
+  saveEntry();
+  startLoading();
+});
+
+// Allow Enter key to submit
+emailInput.addEventListener('keydown', e => { if (e.key === 'Enter') enterBtn.click(); });
+nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') emailInput.focus(); });
+
+/* ════════════════ 2. LOADING ════════════════ */
+function timeGreeting(){
+  const h = new Date().getHours();
+  if (h < 12) return 'GOOD MORNING';
+  if (h < 17) return 'GOOD AFTERNOON';
+  if (h < 21) return 'GOOD EVENING';
+  return 'STILL UP';
+}
+function nameQuip(name){
+  const quips = [
+    'GREAT NAME. LET\'S NOT WASTE IT.',
+    'I HAVE A GOOD FEELING ABOUT YOU, ' + name.toUpperCase() + '.',
+    name.toUpperCase() + '? SOLID. PROCEED.',
+    'NICE TO MEET YOU, ' + name.toUpperCase() + '. FOR REAL.',
+    'WELCOME ABOARD, ' + name.toUpperCase() + '.',
+  ];
+  return quips[Math.floor(Math.random()*quips.length)];
+}
+
+function startLoading(){
+  const sp=document.getElementById('soundPrompt'); if(sp){ sp.style.opacity='0'; setTimeout(()=>sp.style.display='none',400); }
+  hide('entryScreen');
+  show('loadingScreen');
+  const first = _data.name.split(' ')[0];
+  document.getElementById('loadingGreet').textContent = timeGreeting() + ', ' + first.toUpperCase() + '.';
+  document.getElementById('loadingQuip').textContent = nameQuip(first);
+  gc('/loading', 'Loading screen');
+
+  const bar = document.getElementById('mcBar');
+  const pct = document.getElementById('mcPct');
+
+  let assetsReady = 0;
+  const totalAssets = 2;
+  function markReady(){ assetsReady++; }
+
+  // Preload GIF (with timeout fallback)
+  const gifImg = new Image();
+  gifImg.onload = markReady;
+  gifImg.onerror = markReady;
+  gifImg.src = './bg.gif';
+  if (gifImg.complete) markReady();
+
+  // Preload door video (fire and forget — don't block)
+  const dv = document.getElementById('doorVideo');
+  try { dv.load(); } catch(e){}
+
+  // Preload audio (with timeout fallback)
+  if (bgAudio.readyState >= 3) { markReady(); }
+  else {
+    bgAudio.addEventListener('canplaythrough', markReady, { once:true });
+    bgAudio.addEventListener('loadeddata', markReady, { once:true });
+    bgAudio.addEventListener('error', markReady, { once:true });
+    try { bgAudio.load(); } catch(e){}
+  }
+
+  // Hard safety: never wait more than 4s for assets
+  setTimeout(() => { assetsReady = totalAssets; }, 4000);
+
+  // Single animation loop — always reaches 100%
+  const startTime = Date.now();
+  const minTime = 2400; // min dwell so greeting is readable
+  let displayed = 0;
+
+  const timer = setInterval(() => {
+    const elapsed = Date.now() - startTime;
+    // Cap based on assets + time
+    let cap;
+    if (assetsReady >= totalAssets && elapsed >= minTime) {
+      cap = 100;
+    } else {
+      // crawl toward 90 while waiting
+      cap = Math.min(90, Math.round((elapsed / minTime) * 90) + (assetsReady/totalAssets)*5);
+    }
+    if (displayed < cap) {
+      displayed = Math.min(cap, displayed + 2);
+      bar.style.width = displayed + '%';
+      pct.textContent = displayed + '%';
+    }
+    if (displayed >= 100) {
+      clearInterval(timer);
+      setTimeout(showMain, 400);
+    }
+  }, 22);
+}
+
+/* ════════════════ 3. MAIN / PERSONAL SITE ════════════════ */
+function typeInto(el, text, cursorEl, speed, onDone){
+  let i=0; cursorEl.style.display='inline-block';
+  (function tick(){
+    if(i<=text.length){ el.textContent=text.slice(0,i); el.appendChild(cursorEl); i++; setTimeout(tick, i===1?speed*1.5:speed); }
+    else { cursorEl.remove(); if(onDone) onDone(); }
+  })();
+}
+
+function typeNameOnly(){
+  const nameLinkEl = document.getElementById('nameLink');
+  nameLinkEl.style.opacity='1'; nameLinkEl.textContent='';
+  const nameText='RAHUL V SHETTY,';
+  const nameCursor=document.createElement('span'); nameCursor.className='mc-cursor gold';
+  let ni=0;
+  (function typeName(){
+    if(ni<=nameText.length){ nameLinkEl.textContent=nameText.slice(0,ni); nameLinkEl.appendChild(nameCursor); ni++; setTimeout(typeName, ni===1?120:70); }
+    else { nameCursor.remove(); }
+  })();
+}
+
+function showMain(){
+  hide('loadingScreen');
+  show('mainScreen');
+  document.getElementById('bg').classList.add('show');
+  document.getElementById('bgOverlay').classList.add('show');
+  gc('/main', 'Personal site revealed');
+
+  const line1El=document.getElementById('line1'), nameLinkEl=document.getElementById('nameLink'),
+        line3El=document.getElementById('line3'), cur1El=document.getElementById('cur1'), cur3El=document.getElementById('cur3');
+
+  typeInto(line1El, 'MY NAME IS', cur1El, 90, () => {
+    nameLinkEl.style.opacity='1'; nameLinkEl.textContent='';
+    const nameText='RAHUL V SHETTY,'; const nameCursor=document.createElement('span'); nameCursor.className='mc-cursor gold';
+    let ni=0;
+    (function typeName(){
+      if(ni<=nameText.length){ nameLinkEl.textContent=nameText.slice(0,ni); nameLinkEl.appendChild(nameCursor); ni++; setTimeout(typeName, ni===1?120:75); }
+      else { nameCursor.remove();
+        setTimeout(()=>{
+          cur3El.style.display='inline-block'; line3El.textContent=''; line3El.appendChild(cur3El);
+          typeInto(line3El, 'AND I KEEP LEARNING, CREATING, AND DOING MY PART TO MAKE THE WORLD A LITTLE BETTER', cur3El, 45, ()=>{
+            const dot=document.createElement('span'); dot.className='mc-cursor gold'; dot.style.animation='mcblink 0.7s step-end infinite'; line3El.appendChild(dot);
+            setTimeout(()=>{
+              document.getElementById('playBtn').classList.add('show');
+              document.getElementById('playTeaser').classList.add('show');
+              const vlg=document.getElementById('villager'); if(vlg) vlg.style.display='flex';
+              document.getElementById('xpWrap').classList.add('show');
+              setTimeout(()=>{ document.getElementById('xpBar').style.width='76%'; }, 200);
+            }, 400);
+          });
+        }, 200);
+      }
+    })();
+  });
+}
+
+/* ════════════════ NAME CLICK → EXPLODE → LINKEDIN ════════════════ */
+const nameLink = document.getElementById('nameLink');
+nameLink.addEventListener('mouseenter', ()=>cur.classList.add('hover'));
+nameLink.addEventListener('mouseleave', ()=>cur.classList.remove('hover'));
+nameLink.addEventListener('click', function(e){
+  e.preventDefault(); triggerExplode();
+  nameLink.style.animation='shake 0.4s ease'; setTimeout(()=>{nameLink.style.animation='';},400);
+  gc('/name-clicked', 'Name clicked');
+  setTimeout(()=>{ window.open('https://www.linkedin.com/in/rahulvshetty2002/','_blank','noopener'); }, 520);
+});
+
+/* ════════════════ 4. WANT TO PLAY → DOOR → QUIZ ════════════════ */
+document.getElementById('playBtn').addEventListener('click', () => {
+  gc('/play-yes', 'Chose to play');
+  const vlg=document.getElementById('villager'); if(vlg) vlg.style.display='none';
+  hide('mainScreen');
+  document.getElementById('bg').classList.remove('show');
+  document.getElementById('bgOverlay').classList.remove('show');
+
+  const video = document.getElementById('doorVideo');
+  const glow  = document.getElementById('videoGlow');
+
+  // Show + play the door video as background
+  video.style.opacity = '1';
+  video.currentTime = 0;
+  const playPromise = video.play();
+  if (playPromise) playPromise.catch(()=>{});
+
+  // At 4.9s — door has opened, forest scene is showing.
+  // Apply 10% blur + glow, then fade in the quiz on top.
+  setTimeout(() => {
+    video.style.filter = 'blur(3px) brightness(0.87)';  // +3% darker
+    glow.style.opacity = '1';
+    startQuizOverVideo();
+  }, 4900);
+});
+
+function startQuizOverVideo(){
+  show('quizScreen');
+  startQuiz();
+}
+
+/* ════════════════ QUIZ DATA ════════════════ */
+const questions = [
+  { q: "FIRST THINGS FIRST — WHAT BRINGS YOU HERE?",
+    opts: [
+      { t: "SOMEONE SENT ME THIS LINK", msg:"classic" },
+      { t: "I'M CHECKING OUT YOUR WORK", msg:"respect" },
+      { t: "HONESTLY, JUST CURIOUS", msg:"the best reason" },
+      { t: "I WANT TO WORK WITH YOU", msg:"bold. i like it" },
+    ] },
+  { q: "WHAT KIND OF PERSON ARE YOU?",
+    opts: [
+      { t: "A BUILDER / MAKER", msg:"my kind of people" },
+      { t: "A DREAMER / THINKER", msg:"the world needs you" },
+      { t: "A DOER / HUSTLER", msg:"let's go" },
+      { t: "STILL FIGURING IT OUT", msg:"aren't we all" },
+    ] },
+  { q: "PICK ONE — WHAT MATTERS MOST TO YOU?",
+    opts: [
+      { t: "FREEDOM", msg:"a person after my own heart" },
+      { t: "GROWTH", msg:"never stop" },
+      { t: "IMPACT", msg:"make it count" },
+      { t: "PEACE", msg:"underrated. respect" },
+    ] },
+  { q: "BE HONEST — DO YOU FINISH WHAT YOU START?",
+    opts: [
+      { t: "ALWAYS. NO EXCEPTIONS.", msg:"rare breed" },
+      { t: "MOST OF THE TIME.", msg:"honest. i'll take it" },
+      { t: "I'M WORKING ON IT.", msg:"same, friend. same" },
+      { t: "...NEXT QUESTION.", msg:"haha. fair" },
+    ] },
+  { q: "LAST ONE — ARE YOU READY FOR YOUR REWARD?",
+    opts: [
+      { t: "BORN READY.", msg:"that's what i thought" },
+      { t: "LET'S FIND OUT.", msg:"good answer" },
+      { t: "WAS READY 5 QUESTIONS AGO.", msg:"haha, here we go" },
+      { t: "JUST GIVE IT TO ME.", msg:"already on it" },
+    ] },
+];
+
+let currentQ = 0;
+const questionText=document.getElementById('questionText'), optionsWrap=document.getElementById('optionsWrap'), progressDots=document.getElementById('progressDots');
+
+function startQuiz(){
+  gc('/quiz-start', 'Quiz started');
+  progressDots.innerHTML='';
+  questions.forEach((_,i)=>{ const d=document.createElement('div'); d.className='prog-dot'+(i===0?' active':''); d.id='dot'+i; progressDots.appendChild(d); });
+  currentQ=0;
+  typeQuestion(questions[0].q, showOptions);
+}
+function updateDots(){ questions.forEach((_,i)=>{ const d=document.getElementById('dot'+i); d.className='prog-dot'+(i<currentQ?' done':i===currentQ?' active':''); }); }
+function typeQuestion(text, cb){
+  questionText.textContent=''; questionText.classList.add('visible'); let i=0;
+  (function tick(){ if(i<=text.length){ questionText.textContent=text.slice(0,i); i++; setTimeout(tick, i<5?60:32); } else if(cb) cb(); })();
+}
+function showOptions(){
+  optionsWrap.classList.remove('visible'); optionsWrap.innerHTML='';
+  questions[currentQ].opts.forEach(opt=>{ const b=document.createElement('button'); b.className='opt-btn'; b.textContent=opt.t; b.addEventListener('click',()=>selectOption(opt,b)); optionsWrap.appendChild(b); });
+  setTimeout(()=>optionsWrap.classList.add('visible'),100);
+}
+function selectOption(opt, btn){
+  optionsWrap.querySelectorAll('.opt-btn').forEach(b=>{ b.style.pointerEvents='none'; b.style.opacity='0.3'; });
+  btn.classList.add('selected'); btn.style.opacity='1';
+  _data['q'+(currentQ+1)] = opt.t;
+  gc('/q'+(currentQ+1)+'/'+opt.t.slice(0,30), 'Q'+(currentQ+1)+': '+opt.t.slice(0,30));
+  setTimeout(()=>{
+    currentQ++;
+    if(currentQ<questions.length){ updateDots(); optionsWrap.classList.remove('visible'); setTimeout(()=>typeQuestion(questions[currentQ].q, showOptions),300); }
+    else { showCoupon(); }
+  },500);
+}
+
+/* ════════════════ 5. COUPON ════════════════ */
+function genCoupon(name){
+  const clean = (name.split(' ')[0]||'CAVE').toUpperCase().replace(/[^A-Z]/g,'').slice(0,6) || 'CAVE';
+  const rand = Math.random().toString(36).toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4);
+  return 'CAVE-' + clean + '-' + rand;
+}
+function showCoupon(){
+  hide('quizScreen');
+  show('couponScreen');
+  const code = genCoupon(_data.name);
+  _data.coupon = code;
+  document.getElementById('couponCode').textContent = code;
+  gc('/coupon/'+code, 'Coupon generated');
+  fireConfetti();
+  saveToSupabase();
+  sendReadingEmail();
+}
+
+// Email the personality reading via Supabase Edge Function
+async function sendReadingEmail(){
+  try {
+    await fetch('https://nrmgsgntcopoyfphvjbm.supabase.co/functions/v1/send-personality-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybWdzZ250Y29wb3lmcGh2amJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNjk1MTIsImV4cCI6MjA5NDc0NTUxMn0.1GOOUh4fbwUOZeosGriiuowWubHA0UqxjEilNUecGu0'
+      },
+      body: JSON.stringify({
+        name: _data.name, email: _data.email,
+        q1: _data.q1, q2: _data.q2, q3: _data.q3, q4: _data.q4, q5: _data.q5,
+        coupon: _data.coupon
+      })
+    });
+    gc('/email-sent', 'Reading email sent');
+  } catch(e) { console.log('Email send failed:', e); }
+}
+
+
+document.getElementById('couponContinue').addEventListener('click', () => {
+  hide('couponScreen');
+  // Fade out video, bring back the gif background
+  const video = document.getElementById('doorVideo');
+  const glow  = document.getElementById('videoGlow');
+  video.style.opacity = '0';
+  glow.style.opacity = '0';
+  setTimeout(() => { video.pause(); video.style.filter = 'blur(0px)'; }, 800);
+  show('mainScreen');
+  document.getElementById('bg').classList.add('show');
+  document.getElementById('bgOverlay').classList.add('show');
+  // hide play button + teaser since they already played
+  document.getElementById('playBtn').style.display = 'none';
+  const pt = document.getElementById('playTeaser'); if (pt) pt.style.display = 'none';
+  const vlg = document.getElementById('villager'); if (vlg) vlg.style.display = 'flex';
+  gc('/coupon-continue', 'Returned to site after coupon');
+});
+
+/* ════════════════ EXPLOSION ════════════════ */
+const canvas=document.getElementById('explodeCanvas'), ctx2=canvas.getContext('2d');
+canvas.width=innerWidth; canvas.height=innerHeight;
+addEventListener('resize',()=>{ canvas.width=innerWidth; canvas.height=innerHeight; confCanvas.width=innerWidth; confCanvas.height=innerHeight; },{passive:true});
+const YELLOWS=['#FFD700','#FFF176','#FFEC00','#FFE44D','#FFC200','#FFFACD','#FFD000','#FFF59D'];
+function rnd(a,b){ return a+Math.random()*(b-a); }
+class P{ constructor(x,y){
+    this.x=x;this.y=y;
+    // Radial burst — all directions
+    const angle=rnd(0,Math.PI*2);
+    const speed=rnd(4,18);
+    this.vx=Math.cos(angle)*speed;
+    this.vy=Math.sin(angle)*speed;
+    this.g=rnd(.2,.55);
+    this.s=Math.floor(rnd(3,10));
+    this.c=YELLOWS[Math.floor(Math.random()*YELLOWS.length)];
+    this.l=1;this.d=rnd(.008,.018);
+    this.r=rnd(0,6.28);this.rs=rnd(-.2,.2);
+    this.ch=Math.random()>.5;
+    this.char='RAHULVSHETTY'[Math.floor(Math.random()*12)];
+  }
+  u(){ this.vx*=.96;this.vy=this.vy*.96+this.g;this.x+=this.vx;this.y+=this.vy;this.l-=this.d;this.r+=this.rs; }
+  dr(){ if(this.l<=0)return; ctx2.save();ctx2.globalAlpha=Math.max(0,this.l);ctx2.translate(this.x,this.y);ctx2.rotate(this.r); if(this.ch){ctx2.font='bold '+(this.s*3)+'px "Press Start 2P",monospace';ctx2.fillStyle=this.c;ctx2.fillText(this.char,0,0);}else{ctx2.fillStyle=this.c;ctx2.fillRect(-this.s/2,-this.s/2,this.s,this.s);} ctx2.restore(); } }
+let parts=[], af=null;
+function triggerExplode(){
+  // Ensure canvas matches viewport
+  canvas.width = innerWidth; canvas.height = innerHeight;
+  const r = nameLink.getBoundingClientRect();
+  const cy = r.top + r.height/2;
+  const cx = r.left + r.width/2;
+  canvas.style.opacity = 1; parts = []; cancelAnimationFrame(af);
+  // Spawn across the full name width, plus a big central burst
+  const spawnPoints = 10;
+  for(let i=0;i<spawnPoints;i++){
+    const px = r.left + (r.width/(spawnPoints-1))*i;
+    for(let j=0;j<22;j++) parts.push(new P(px, cy));
+  }
+  // Extra central burst for density
+  for(let j=0;j<60;j++) parts.push(new P(cx, cy));
+  runP();
+}
+function runP(){ ctx2.clearRect(0,0,canvas.width,canvas.height); parts=parts.filter(p=>p.l>0); parts.forEach(p=>{p.u();p.dr();}); if(parts.length)af=requestAnimationFrame(runP); else canvas.style.opacity=0; }
+
+/* ════════════════ CONFETTI (coupon) ════════════════ */
+const confCanvas=document.getElementById('confettiCanvas'), cctx=confCanvas.getContext('2d');
+confCanvas.width=innerWidth; confCanvas.height=innerHeight;
+let conf=[], caf=null;
+class Conf{
+  constructor(mode){
+    if(mode==='cannonL'){ // bottom-left cannon
+      this.x=rnd(-20,40); this.y=innerHeight+rnd(0,30);
+      this.vx=rnd(6,16); this.vy=rnd(-22,-10);
+    } else if(mode==='cannonR'){ // bottom-right cannon
+      this.x=innerWidth-rnd(-20,40); this.y=innerHeight+rnd(0,30);
+      this.vx=-rnd(6,16); this.vy=rnd(-22,-10);
+    } else { // rain from top
+      this.x=rnd(0,innerWidth); this.y=rnd(-120,-10);
+      this.vx=rnd(-1.5,1.5); this.vy=rnd(3,7);
+    }
+    this.g=0.35;
+    this.s=Math.floor(rnd(5,13));
+    this.c=YELLOWS[Math.floor(Math.random()*YELLOWS.length)];
+    this.r=rnd(0,6.28); this.rs=rnd(-.18,.18); this.l=1;
+  }
+  u(){ this.vy+=this.g; this.y+=this.vy; this.x+=this.vx; this.r+=this.rs; if(this.y>innerHeight+30)this.l=0; }
+  dr(){ cctx.save();cctx.globalAlpha=Math.max(0,this.l);cctx.translate(this.x,this.y);cctx.rotate(this.r);cctx.fillStyle=this.c;cctx.fillRect(-this.s/2,-this.s/2,this.s,this.s);cctx.restore(); }
+}
+function fireConfetti(){
+  confCanvas.width=innerWidth; confCanvas.height=innerHeight;
+  conf=[];
+  // Two big side cannons — instant burst
+  for(let i=0;i<120;i++) conf.push(new Conf('cannonL'));
+  for(let i=0;i<120;i++) conf.push(new Conf('cannonR'));
+  // Heavy top rain
+  for(let i=0;i<200;i++) conf.push(new Conf('rain'));
+  let frames=0; cancelAnimationFrame(caf);
+  (function run(){
+    frames++;
+    cctx.clearRect(0,0,confCanvas.width,confCanvas.height);
+    // Keep adding rain for first 90 frames for a sustained shower
+    if(frames<90 && frames%4===0){ for(let i=0;i<14;i++) conf.push(new Conf('rain')); }
+    conf=conf.filter(c=>c.l>0);
+    conf.forEach(c=>{c.u();c.dr();});
+    if(conf.length&&frames<500)caf=requestAnimationFrame(run);
+    else cctx.clearRect(0,0,confCanvas.width,confCanvas.height);
+  })();
+}
+
+/* ════════════════ TIME ON SITE ════════════════ */
+const _start=Date.now();
+addEventListener('beforeunload',()=>{ const s=Math.round((Date.now()-_start)/1000); gc('/time/'+s+'s','Time on site: '+s+'s'); });
+
+/* Hover states for all buttons */
+document.querySelectorAll('button, a, input').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cur.classList.add('hover'));
+  el.addEventListener('mouseleave',()=>cur.classList.remove('hover'));
+});
+
+
+/* ════════════════ T&C MODAL ════════════════ */
+const TNC_TERMS = [
+  '1. This 10% discount is valid for FIRST-TIME customers at Cave Mens Salon only.',
+  '2. Valid at all three branches: Koramangala (Bangalore), Karkala, and Moodbidri.',
+  '3. The coupon code must be shown via screenshot at the salon counter before billing.',
+  '4. One coupon per person. Cannot be transferred or sold.',
+  '5. Cannot be combined with any other ongoing offer, discount, or package.',
+  '6. Discount applies to services only, not retail products, unless stated by the salon.',
+  '7. Cave Mens Salon reserves the right to verify first-time customer status.',
+  '8. The offer has no cash value and cannot be redeemed for cash.',
+  '9. Cave Mens Salon reserves the right to modify or withdraw this offer at any time.',
+  '10. By using this coupon, you agree to receive occasional updates. You can opt out anytime.'
+];
+
+function openTnc(){
+  const body = document.getElementById('tncBody');
+  body.innerHTML = TNC_TERMS.map(t => '<div style="margin-bottom:14px">' + t + '</div>').join('');
+  document.getElementById('tncModal').style.display = 'flex';
+  gc('/tnc-opened', 'T&C opened');
+}
+function closeTnc(){ document.getElementById('tncModal').style.display = 'none'; }
+
+document.addEventListener('click', function(e){
+  if (e.target && e.target.id === 'tncLink') { openTnc(); }
+});
+document.getElementById('tncClose').addEventListener('click', closeTnc);
+const _tncLink = document.getElementById('tncLink');
+if (_tncLink) { _tncLink.addEventListener('mouseenter',()=>cur.classList.add('hover')); _tncLink.addEventListener('mouseleave',()=>cur.classList.remove('hover')); }
+document.getElementById('tncModal').addEventListener('click', function(e){
+  if (e.target === this) closeTnc();
+});
+
+/* ════════════════ VILLAGER CONTACT ════════════════ */
+const villager = document.getElementById('villager');
+const contactModal = document.getElementById('contactModal');
+if (villager) {
+  villager.addEventListener('click', (e) => {
+    e.stopPropagation();
+    contactModal.style.display = 'flex';
+    gc('/contact-open', 'Villager clicked');
+  });
+  villager.addEventListener('mouseenter', ()=>cur.classList.add('hover'));
+  villager.addEventListener('mouseleave', ()=>cur.classList.remove('hover'));
+}
+document.getElementById('contactClose').addEventListener('click', (e) => {
+  e.stopPropagation(); contactModal.style.display = 'none';
+});
+contactModal.addEventListener('click', function(e){ if (e.target === this) contactModal.style.display = 'none'; });
+document.getElementById('contactLinkedin').addEventListener('click', () => gc('/contact-linkedin','Contact: LinkedIn'));
+document.getElementById('contactEmail').addEventListener('click', () => gc('/contact-email','Contact: Email'));
+
+
+/* Click anywhere on main screen (empty space) → retype RAHUL V SHETTY */
+document.getElementById('mainScreen').addEventListener('click', function(e){
+  // Ignore clicks on the name link or play button
+  if (e.target.closest('#nameLink') || e.target.closest('#playBtn') || e.target.closest('#villager') || e.target.closest('#contactModal')) return;
+  typeNameOnly();
+});
+
+/* Autofocus name */
+window.addEventListener('load', ()=>{ setTimeout(()=>nameInput.focus(), 300); });
+</script>
+</body>
+</html>
